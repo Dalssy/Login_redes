@@ -1,23 +1,20 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { use } = require('../../routes/User');
+const { use } = require('../routes/userroutes');
 
 class UserController {
     async index(req, res) {
-        const token = req.cookies.token;
 
-        if (token) {
-            //   Si el usuario ya tiene un token válido, redirígelo a la página de inicio o a donde desees.
-            res.redirect('/home');
-        } else {
-            //   Si el usuario no tiene un token válido, muéstrale la página de inicio de sesión.
-            res.render('login');
-        }
-        // res.render('login');
+        const users = await User.findAll({
+            order:[['createdAt','DESC']],   
+        });
+        res.render('home',{users});
+
+       
     }
 
-    async registrar(req, res) {
+    async registrar1(req, res) {
         // try {
         //   const { username, password, email } = req.body;
         let username = 'testUser'
@@ -43,6 +40,15 @@ class UserController {
         //   res.status(500).json({ error: 'Error al registrar el usuario',
         // message:error });
         // }
+    }
+
+    async registrar(req,res){
+        try {
+            await User.create(req.body);
+            res.render('registrar')
+        } catch (error) {
+            res.send('Error al guardar' + error)
+        }
     }
     async login(req, res) {
         try {
@@ -84,7 +90,18 @@ class UserController {
             });
         }
 
+    }
 
+    async show_form(req,res){
+        try {
+            const users = await User.findAll({
+                order:[['createdAt','DESC']],   
+            });
+            res.render('registrar',{users});
+            // res.render('registrar');
+        } catch (error) {
+            
+        }
     }
 
     async logout(req, res) {

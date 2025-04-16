@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const db = require('./database/conecction');
-const appRoutes = require('./routes/User');
-const productsRoutes = require('./routes/products');
+const db = require('./database/conexion');
+const appRoutes = require('./routes/userroutes');
+// const productsRoutes = require('./routes/products');
 
-const User = require('./app/models/User');
-const Products = require('./app/models/Products');
+const User = require('./models/user');
+// const Products = require('./app/models/Products');
 
 
 const app = express();
@@ -26,11 +26,11 @@ db.authenticate()
 
   
 User.sync();
-Products.sync();
+// Products.sync();
 
 
 app.use('/',appRoutes);
-app.use('/products',productsRoutes);
+// app.use('/products',productsRoutes);
 
 
 app.listen(PORT, () => {
