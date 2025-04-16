@@ -45,7 +45,7 @@ class UserController {
     async registrar(req,res){
         try {
             await User.create(req.body);
-            res.render('registrar')
+            res.redirect('/registrar')
         } catch (error) {
             res.send('Error al guardar' + error)
         }
